@@ -1,0 +1,9 @@
+steps:
+- id: Promote most recent release to production
+  name: gcr.io/cloud-builders/gcloud
+  entrypoint: sh
+  args:
+    - -c
+    - |
+      MOST_RECENT_RELEASE=$$(gcloud deploy releases list --delivery-pipeline cd-argo-pipeline --region $LOCATION --format="value(name)" --limit 1)
+      gcloud deploy releases promote --delivery-pipeline cd-argo-pipeline --release $${MOST_RECENT_RELEASE} --region $LOCATION

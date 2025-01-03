@@ -1,0 +1,26 @@
+steps:
+- name: gcr.io/k8s-skaffold/skaffold
+  id: Build the image with Skaffold
+  entrypoint: /bin/bash
+  args:
+    - -c
+    - |
+      skaffold build --interactive=false --file-output=/workspace/artifacts.json --default-repo=$LOCATION-docker.pkg.dev/$PROJECT_ID/cd-custom-targets --push=true
+
+
+- id: Create a release in Cloud Deploy and rollout to QA
+  name: gcr.io/cloud-builders/gcloud
+  entrypoint: 'bash'
+  args:
+    - '-c'
+    - |
+      gcloud deploy releases create cdongcp-${SHORT_SHA} --delivery-pipeline cd-argo-pipeline \
+          --region $LOCATION --annotations "commitId=${REVISION_ID}" --build-artifacts /workspace/artifacts.json
+  waitFor: ['Build the image with Skaffold']
+
+images:
+- $LOCATION-docker.pkg.dev/$PROJECT_ID/cd-custom-targets/cdongcp-app:${SHORT_SHA}
+options:
+  requestedVerifyOption: VERIFIED
+
+

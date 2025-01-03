@@ -1,0 +1,25 @@
+steps:
+- name: gcr.io/k8s-skaffold/skaffold
+  entrypoint: /bin/bash
+  args:
+    - -c
+    - |
+      skaffold build --interactive=false --file-output=/workspace/artifacts.json --default-repo=$LOCATION-docker.pkg.dev/$PROJECT_ID/cd-custom-targets --push=true
+  id: skaffold-build
+- name: gcr.io/google.com/cloudsdktool/cloud-sdk
+  entrypoint: gcloud
+  args:
+    [
+      "deploy", "releases", "create", "first-release",
+      "--delivery-pipeline", "cd-argo-pipeline",
+      "--region", "$LOCATION",
+      "--annotations", "commitId=${REVISION_ID}",
+      "--build-artifacts", "/workspace/artifacts.json"
+    ]
+  waitFor: ['skaffold-build']
+images:
+- $LOCATION-docker.pkg.dev/$PROJECT_ID/cd-custom-targets/cdongcp-app
+options:
+  requestedVerifyOption: VERIFIED
+
+
