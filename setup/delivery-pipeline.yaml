@@ -33,13 +33,13 @@ metadata:
 customTarget:
   customTargetType: git
 deployParameters:
-  customTarget/gitRepo: github.com/$GIT_OWNER/$GIT_REPO
+  customTarget/gitRepo: github.com/ggalloro/cd-argo-deploy
   customTarget/gitPath: deploy/k8s.yaml
-  customTarget/gitSecret: projects/$PROJECT_ID/secrets/$SECRET_ID/versions/$SECRET_VERSION
+  customTarget/gitSecret: projects/galloro-demos/secrets/cd-argo-pat/versions/1
   customTarget/gitSourceBranch: qa
   customTarget/gitDestinationBranch: main
   customTarget/gitEnableArgoSyncPoll: "true"
-  customTarget/gitGKECluster: projects/$PROJECT_ID/locations/$ZONE/clusters/$QA_CLUSTER
+  customTarget/gitGKECluster: projects/galloro-demos/locations/europe-west1-b/clusters/qa-cluster
   customTarget/gitArgoApplication: cdongcp-qa
   customTarget/gitArgoNamespace: argocd
   customTarget/gitEnablePullRequestMerge: "true"
@@ -51,13 +51,13 @@ metadata:
 customTarget:
   customTargetType: git
 deployParameters:
-  customTarget/gitRepo: github.com/$GIT_OWNER/$GIT_REPO
+  customTarget/gitRepo: github.com/ggalloro/cd-argo-deploy
   customTarget/gitPath: deploy/k8s.yaml
-  customTarget/gitSecret: projects/$PROJECT_ID/secrets/$SECRET_ID/versions/$SECRET_VERSION
+  customTarget/gitSecret: projects/galloro-demos/secrets/cd-argo-pat/versions/1
   customTarget/gitSourceBranch: prod
   customTarget/gitDestinationBranch: main
   customTarget/gitEnableArgoSyncPoll: "true"
-  customTarget/gitGKECluster: projects/$PROJECT_ID/locations/$ZONE/clusters/$QA_CLUSTER
+  customTarget/gitGKECluster: projects/galloro-demos/locations/europe-west1-b/clusters/qa-cluster
   customTarget/gitArgoApplication: cdongcp-prod
   customTarget/gitArgoNamespace: argocd
   customTarget/gitEnablePullRequestMerge: "true"
